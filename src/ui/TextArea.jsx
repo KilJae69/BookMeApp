@@ -2,11 +2,12 @@ import React from "react";
 
 const TextArea = React.forwardRef(
   (
-    { name, rows = 2, id, className, placeholder, defaultValue, ...rest },
+    { name, rows = 6, id,disabled, className, placeholder, defaultValue, ...rest },
     ref
   ) => {
     return (
       <textarea
+        disabled={disabled}
         ref={ref}
         rows={rows}
         name={name}

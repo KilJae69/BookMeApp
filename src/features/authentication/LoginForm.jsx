@@ -1,62 +1,61 @@
-import { useState } from "react";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
 import { useLogin } from "./useLogin";
 import SpinnerMini from "../../ui/Spinner";
+import Input from "../../components/inputs/Input";
+import { useForm } from "react-hook-form";
 
 
 function LoginForm() {
-  const [email, setEmail] = useState("adi.toromanovic@outlook.com");
-  const [password, setPassword] = useState("12345678");
+   const {
+     register,
+     formState: { errors },
+     handleSubmit,
+   } = useForm();
+
   const { login, isLoading } = useLogin();
   
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!email || !password) return;
-    login(
-      { email, password },
-      {
-        onSettled: () => {
-          setEmail("");
-          setPassword("");
-        },
-      }
-    );
+  function onSubmit(data) {
+   const { email, password } = data;
+    login({ email, password });
   }
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRow label="Email" inputId="email">
-        <Input
-          value={email}
-          type="text"
-          id="email"
-          name="email"
-          autoComplete="email"
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={isLoading}
-        />
-      </FormRow>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "Email is required",
+          pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Invalid email address",
+          },
+        }}
+        errors={errors}
+      />
 
-      <FormRow label="Password" inputId="password">
-        <Input
-          value={password}
-          type="password"
-          id="password"
-          name="password"
-          autoComplete="new-password"
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={isLoading}
-        />
-      </FormRow>
+      <Input
+        id="password"
+        name="password"
+        label="Password"
+        type="password"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "This field required",
+        }}
+        errors={errors}
+      />
 
-      <FormRow>
-        <Button type="submit" variation="form" disabled={isLoading}>
-          {!isLoading ? "Log in" : <SpinnerMini />}
-        </Button>
-      </FormRow>
+      <Button type="submit" variation="form" disabled={isLoading}>
+        {!isLoading ? "Log in" : <SpinnerMini />}
+      </Button>
     </Form>
   );
 }

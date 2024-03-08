@@ -23,19 +23,19 @@ function ColorsListBox({colors,currentColor,setCurrentColor}) {
               <Listbox.Button
                 className={classNames(
                   `${currentTheme.background} ${currentTheme.hoverBackground}`,
-                  "relative inline-flex items-center whitespace-nowrap rounded-full transition-colors px-2 py-2 text-sm font-medium text-gray-500 sm:px-3"
+                  "relative inline-flex items-center whitespace-nowrap rounded-full group transition-colors px-2 py-2 text-sm font-medium text-gray-500 sm:px-3"
                 )}
               >
                 <IoColorPaletteOutline
                   className={classNames(
-                    `${currentTheme.text}`,
+                    `${currentTheme.textLight} ${currentTheme.textLightGroupHover}`,
                     "h-5 w-5 flex-shrink-0 sm:-ml-1"
                   )}
                   aria-hidden="true"
                 />
                 <span
                   className={classNames(
-                    `${currentTheme.text}`,
+                    `${currentTheme.textLight} ${currentTheme.textLightGroupHover}`,
                     "hidden truncate sm:ml-2 sm:block"
                   )}
                 >
@@ -58,7 +58,7 @@ function ColorsListBox({colors,currentColor,setCurrentColor}) {
                         classNames(
                           active ? color.background : "bg-white",
                           "group relative cursor-pointer select-none px-3 py-2",
-                          color.text
+                          color.textLight
                         )
                       }
                       value={color}

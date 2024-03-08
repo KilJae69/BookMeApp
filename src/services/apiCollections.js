@@ -17,17 +17,16 @@ export async function getCollections(userId) {
 export async function getCollectionById(collectionId) {
   const { data: collection, error } = await supabase
     .from("collections")
-    .select("*,categories(*)")
+    .select("*,categories(*,bookmarks(*))")
     .eq("id", collectionId)
-    .single()
-    
+    .single();
+
   if (error) {
     console.error(error);
     throw new Error("Error fetching collection");
   }
 
   return collection;
-  
 }
 
 export async function createCollection(newCollection) {
@@ -40,11 +39,11 @@ export async function createCollection(newCollection) {
     console.error(error);
     throw new Error("Error creating collection");
   }
-  
+
   return data;
 }
 
-export async function renameCollection(collectionId, newName) {
+export async function updateCollection(collectionId, newName) {
   const { data, error } = await supabase
     .from("collections")
     .update({ collection_name: newName })
@@ -53,10 +52,10 @@ export async function renameCollection(collectionId, newName) {
 
   if (error) {
     console.error(error);
-    throw new Error("Error renaming collection");
+    throw new Error("Error updating collection");
   }
 
-  console.log("Collection renamed", data);
+  console.log("Collection updated", data);
   return data;
 }
 
@@ -73,4 +72,3 @@ export async function deleteCollection(collectionId) {
 
   console.log("Collection deleted");
 }
-

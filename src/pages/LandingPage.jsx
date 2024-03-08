@@ -1,4 +1,4 @@
-import Header from "../components/Header";
+import Header from "../components/LandingPageHeader/Header";
 import BackgroundShape from "../ui/BackgroundShape";
 import Button from "../ui/Button";
 

@@ -9,7 +9,7 @@ function CollectionsList() {
     <ul role="list" className="-mx-2 space-y-1">
       {isLoading && (
         <div className=" flex justify-center">
-          <Spinner size="large"/>
+          <Spinner size="large" />
         </div>
       )}
       {!isLoading &&
@@ -17,6 +17,7 @@ function CollectionsList() {
         collections.map((collection) => (
           <CollectionItem key={collection.id} collection={collection} />
         ))}
+      
     </ul>
   );
 }

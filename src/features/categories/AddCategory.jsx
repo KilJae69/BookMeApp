@@ -1,16 +1,19 @@
 import { HiPlus } from "react-icons/hi";
 import Button from "../../ui/Button";
-import AddCategoryForm from "./AddCategoryForm";
-import DialogModal from "../../ui/DialogModal";
-import { useModalState } from "../../hooks/useModalState";
+import useAddCategoryModalStore from "../../store/useAddCategoryModalStore";
+
+
 
 function AddCategory() {
-  const { isOpen, toggleModal,openModal,closeModal } = useModalState();
+const addCategoryModal = useAddCategoryModalStore();
+
 
   return (
     <div>
       <Button
-        onClick={openModal}
+        onClick={(e)=>{
+          e.stopPropagation();
+          addCategoryModal.onOpen()}}
         variation="primary"
       >
         <div className="flex gap-2">
@@ -18,11 +21,6 @@ function AddCategory() {
           <span>New Category</span>
         </div>
       </Button>
-  
-     
-        <DialogModal isOpen={isOpen} setIsOpen={toggleModal}>
-          <AddCategoryForm onCloseModal = {closeModal} />
-        </DialogModal>
      
     </div>
   );

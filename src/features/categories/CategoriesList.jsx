@@ -1,6 +1,6 @@
 
 
-import ExpandableCategoryCard from "../../ui/ExpandableCategoryCard";
+import CategoriesItem from "./CategoriesItem";
 
 
 function CategoriesList({ categories}) {
@@ -9,11 +9,15 @@ function CategoriesList({ categories}) {
   return (
     <ul
       role="list"
-      className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-1 sm:gap-6 lg:grid-cols-2"
+      className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 sm:gap-6 xl:grid-cols-3"
     >
       {categories.map((category) => (
-        <ExpandableCategoryCard key={category.id} category={category} />
+         <li key={category.id} className="relative break-inside-avoid min-w-0">
+
+           <CategoriesItem category={category} />
+         </li>
       ))}
+      
     </ul>
   );
 }

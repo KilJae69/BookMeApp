@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useUser } from "../authentication/useUser";
 import { createCollection as createCollectionApi } from "../../services/apiCollections";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/useAuthStore";
 
 export function useCreateCollection() {
   const queryClient = useQueryClient();
-  const { user } = useUser();
+  const { user } = useAuthStore();
   const userId = user?.id;
   const navigate = useNavigate();
 

@@ -1,65 +1,84 @@
-import { useReducer, useRef } from "react";
+import { Disclosure } from "@headlessui/react";
+import { applyCategoryTheme } from "../../helpers/applyCategoryTheme";
 
-import EditActions from "../../ui/EditActions";
-import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { useModalState } from "../../hooks/useModalState";
-
-import DialogModal from "../../ui/DialogModal";
-import ConfirmDelete from "../../ui/ConfirmDelete";
-import AddCategoryForm from "./AddCategoryForm";
-import { editStateReducer, initialState } from "../../hooks/editStateReducer";
-import Modal from "../../ui/Modal";
+import useDeleteCategoryModal from "../../store/useDeleteCategoryModalStore";
+import EditActionsDropdown from "../../ui/EditActionsDropdown";
+import { HiChevronRight } from "react-icons/hi";
 import Button from "../../ui/Button";
+import useAddBookmarkModalStore from "../../store/useAddBookmarkModalStore";
+import useUpdateCategoryModalStore from "../../store/useUpdateCategoryModalStore";
+import BookmarksList from "../bookmarks/BookmarksList";
 
-function CategoriesItem({ category, theme }) {
-  const { category_name: name } = category;
-  const { isOpen, closeModal, toggleModal } = useModalState();
-  const [state, dispatch] = useReducer(editStateReducer, initialState);
-  const { isEditMode, isDeleting, isEditing } = state;
-  const itemRef = useRef(null);
+function CategoriesItem({ category }) {
+  const { id: categoryId, category_name: name, color, bookmarks } = category;
+  const theme = applyCategoryTheme(color);
+  const updateCategoryModal = useUpdateCategoryModalStore();
+  const deleteCategoryModal = useDeleteCategoryModal();
+  const addBookmarkModal = useAddBookmarkModalStore();
 
-  useOutsideClick(itemRef, () => isEditMode && dispatch({ type: "reset" }));
+  const handleEdit = () => {
+    updateCategoryModal.onOpen(category);
+  };
 
-  function toggleDeleting(e) {
-    e.stopPropagation();
-    dispatch({ type: "toggleDeleting" });
-    toggleModal();
-  }
-
-  function toggleEditing(e) {
-    e.stopPropagation();
-    dispatch({ type: "toggleEditing" });
-    toggleModal();
-  }
+  const handleDelete = () => deleteCategoryModal.onOpen(categoryId);
 
   return (
-    <div
-      ref={itemRef}
-      className="w-full col-span-1 flex rounded-md shadow-sm transition-transform duration-300 transform cursor-pointer"
+    <Disclosure
+      as="div"
+      className="w-full col-span-1 flex flex-col rounded-md shadow-md transition-transform duration-300 cursor-pointer"
     >
-      <div
-        className={`relative flex flex-1 items-center justify-between truncate rounded-r-md  border-l-4 ${theme.border}`}
-      >
-        <div className="flex-1 truncate px-4 py-2 text-sm">
-          <span className=" font-medium text-gray-900">{name}</span>
-          <p className="text-gray-500"># Bookmarks</p>
-        </div>
-        <div className="flex-shrink-0 pr-2">
-          <EditActions
-            onEdit={toggleEditing}
-            isEditMode={isEditMode}
-            onEditMode={(e) => {
-              e.stopPropagation();
-              dispatch({ type: "toggleEditMode" });
-            }}
-            onDelete={toggleDeleting}
-          />
-        </div>
-        {/* <div className={`absolute bottom-0 left-0 h-1 ${theme.borderBottom} w-0 hover:w-full transition-all duration-300 ease-out`}></div> */}
-      </div>
-
-      
-    </div>
+      {({ open }) => (
+        <>
+          <div className={` flex items-center justify-between rounded-md`}>
+            <Disclosure.Button className="group flex flex-1 truncate p-2 text-sm">
+              <div
+                className={`flex w-14 rounded-md transition flex-shrink-0 items-center justify-between text-sm font-medium text-white `}
+              >
+                <HiChevronRight
+                  className={`${
+                    open ? "transform rotate-90" : ""
+                  } w-8 h-8 group-hover:scale-125 transition-transform duration-300 ${
+                    theme?.textLight
+                  } ${theme?.textLightGroupHover}`}
+                />
+              </div>
+              <div className="flex flex-grow  truncate items-start flex-col">
+                <span className=" max-w-[100%] truncate font-medium text-gray-900">
+                  {name}
+                </span>
+                <p className="truncate text-gray-500">
+                  {bookmarks.length}{" "}
+                  {bookmarks.length === 1 ? "Bookmark" : "Bookmarks"}
+                </p>
+              </div>
+            </Disclosure.Button>
+            <EditActionsDropdown
+              categoryTheme={theme}
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          </div>
+          <Disclosure.Panel
+            as="div"
+            className="px-4 pt-4 pb-2 text-sm text-gray-500"
+          >
+            {bookmarks.length !== 0 ? (
+              <BookmarksList categoryTheme={theme} bookmarks={bookmarks} />
+            ) : (
+              <p>No bookmarks in this category</p>
+            )}
+            <div className="py-3 ">
+              <Button
+                onClick={() => addBookmarkModal.onOpen(categoryId)}
+                variation="form"
+              >
+                Add bookmark
+              </Button>
+            </div>
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
   );
 }
 

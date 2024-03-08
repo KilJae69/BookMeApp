@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCollections } from "../../services/apiCollections";
-import { useUser } from "../authentication/useUser";
+
+import useAuthStore from "../../store/useAuthStore";
 
 export function useCollections() {
 
-  const {user} = useUser()
+  const {user} = useAuthStore()
   const userId = user?.id
 
   const {

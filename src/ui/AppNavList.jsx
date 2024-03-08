@@ -1,43 +1,31 @@
-import { useCallback, useState } from "react";
-import AddCollectionForm from "../features/collections/AddCollectionForm";
 import CollectionsList from "../features/collections/CollectionsList";
 import Heading from "./Heading";
 import Button from "./Button";
+import AddCollectionModal from "../features/collections/AddCollectionModal";
+import useAddCollectionModalStore from "../store/useAddCollectionModalStore";
 
 function AppNavList() {
-  const [isAddingCollection, setIsAddingCollection] = useState(false);
-
-  const toggleAddingCollection = useCallback(() => {
-    setIsAddingCollection((prev) => !prev);
-  }, []);
-
+  const addCollectionModal = useAddCollectionModalStore();
   return (
-    <nav className="flex flex-1 flex-col">
-      <ul role="list" className="flex flex-1 flex-col gap-y-7">
-        <li>
-          <Heading>Your Collections</Heading>
-        </li>
-        <li>
-            <CollectionsList />  
-        </li>
-        <li>
-          {isAddingCollection && (
-            <AddCollectionForm onCancelAdding={toggleAddingCollection} />
-          )}
-        </li>
-        <li className="text-center">
-          {!isAddingCollection && (
-            <Button
-              variation="primary"
-              disabled={isAddingCollection}
-              onClick={toggleAddingCollection}
-            >
+    <>
+      <nav className="flex flex-1 flex-col">
+        <ul role="list" className="flex flex-1 flex-col gap-y-7">
+          <li>
+            <Heading>Your Collections</Heading>
+          </li>
+          <li>
+            <CollectionsList />
+          </li>
+
+          <li className="text-center">
+            <Button onClick={addCollectionModal.onOpen} variation="primary">
               Add Collection
             </Button>
-          )}
-        </li>
-      </ul>
-    </nav>
+          </li>
+        </ul>
+      </nav>
+      <AddCollectionModal />
+    </>
   );
 }
 

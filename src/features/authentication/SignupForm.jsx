@@ -1,15 +1,21 @@
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
+
 import { useSignup } from "./useSignup";
 import SpinnerMini from "../../ui/Spinner";
+import Input from "../../components/inputs/Input";
+
 
 function SignupForm() {
   const { signup, isLoading } = useSignup();
-  const { register, formState:{errors}, getValues, handleSubmit, reset } = useForm();
-
+  const {
+    register,
+    formState: { errors },
+    getValues,
+    handleSubmit,
+    reset,
+  } = useForm();
 
   function onSubmit({ email, username, password }) {
     signup(
@@ -21,82 +27,65 @@ function SignupForm() {
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow
+      <Input
+        id="email"
+        name="email"
+        label="Email"
+        type="email"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "Email is required",
+          pattern: {
+            value: /\S+@\S+\.\S+/,
+            message: "Invalid email address",
+          },
+        }}
+        errors={errors}
+      />
+      <Input
+        id="username"
+        name="username"
         label="Username"
-        inputId="username"
-        error={errors?.username?.message}
-      >
-        <Input
-          type="text"
-          id="username"
-          name="username"
-          autoComplete="username"
-          disabled={isLoading}
-          {...register("username", { required: "This field is required" })}
-        />
-      </FormRow>
-
-      <FormRow
-        label="Email address"
-        inputId="email"
-        error={errors?.email?.message}
-      >
-        <Input
-          type="text"
-          id="email"
-          name="email"
-          autoComplete="email"
-          disabled={isLoading}
-          {...register("email", {
-            required: "This field is required",
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: "Please enter a valid email address",
-            },
-          })}
-        />
-      </FormRow>
-
-      <FormRow
-        inputId="password"
+        type="text"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "This field required",
+        }}
+        errors={errors}
+      />
+      <Input
+        id="password"
+        name="password"
         label="Password (min 8 characters)"
-        error={errors?.password?.message}
-      >
-        <Input
-          type="password"
-          id="password"
-          name="password"
-          autoComplete="new-password"
-          disabled={isLoading}
-          {...register("password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password must be at least 8 characters long",
-            },
-          })}
-        />
-      </FormRow>
-
-      <FormRow
+        type="password"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "This field required",
+          minLength: {
+            value: 8,
+            message: "Password must be at least 8 characters long",
+          },
+        }}
+        errors={errors}
+      />
+      <Input
+        id="confirmPassword"
+        name="confirmPassword"
         label="Confirm password"
-        error={errors?.confirmPassword?.message}
-        inputId="confirmPassword"
-      >
-        <Input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          disabled={isLoading}
-          {...register("confirmPassword", {
-            required: "This field is required",
-            validate: (value) =>
-              value === getValues().password || "The passwords do not match",
-          })}
-        />
-      </FormRow>
+        type="password"
+        disabled={isLoading}
+        register={register}
+        validationRules={{
+          required: "This field required",
+          validate: (value) =>
+            value === getValues().password || "The passwords do not match",
+        }}
+        errors={errors}
+      />
 
-      <FormRow>
         <Button
           className="flex w-full justify-center"
           variation="form"
@@ -105,7 +94,7 @@ function SignupForm() {
         >
           {!isLoading ? "Sign up" : <SpinnerMini />}
         </Button>
-      </FormRow>
+
     </Form>
   );
 }

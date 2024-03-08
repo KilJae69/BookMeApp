@@ -1,17 +1,19 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { HiChevronDown } from "react-icons/hi2";
-import { useUser } from "../features/authentication/useUser";
+
 import { useLogout } from "../features/authentication/useLogout";
+import useAuthStore from "../store/useAuthStore";
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 function ProfileMenu() {
-  const {user} = useUser()
-  
+  const {user} = useAuthStore()
   const {logout,isLoading}= useLogout()
+ 
  
     return (
       <Menu as="div" className="relative">
@@ -27,7 +29,7 @@ function ProfileMenu() {
               className="ml-4 text-sm font-semibold leading-6 text-gray-900"
               aria-hidden="true"
             >
-              {user.user_metadata.username}
+              {user?.user_metadata.username}
             </span>
             <HiChevronDown
               className="ml-2 h-5 w-5 text-gray-400"

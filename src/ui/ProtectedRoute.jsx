@@ -1,30 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../features/authentication/useUser";
-import SpinnerMini from "./Spinner";
 import { useEffect } from "react";
+import useAuthStore from "../store/useAuthStore";
+import Spinner from "./Spinner";
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
+  const { user, isInitialized } = useAuthStore();
 
-  //1. Load the authenticated user
-  const { isLoading, isAuthenticated } = useUser();
+
 
   //2. If the user is not authenticated, redirect to the /login page
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) navigate("/login");
-  }, [isAuthenticated, navigate, isLoading]);
+    if (isInitialized && !user) navigate("/login");
+  }, [user, navigate,isInitialized]);
 
   //3. While loading, show a loading spinner
-  if (isLoading)
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <SpinnerMini size="huge" />
-      </div>
-    );
+if (!isInitialized) return (
+  <div className="fixed inset-0 flex items-center justify-center">
+    <Spinner size="huge" />
+  </div>
+);
   //4. If the user is authenticated, render the children
-  if (isAuthenticated) {
+
     return children;
   }
-}
+
 
 export default ProtectedRoute;

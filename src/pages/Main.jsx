@@ -2,9 +2,18 @@ import Heading from "../ui/Heading";
 import CategoriesList from "../features/categories/CategoriesList";
 import AddCategory from "../features/categories/AddCategory";
 import { useParams } from "react-router-dom";
-import { useCollectionById } from "../features/collections/useCollectionById";
 import Spinner from "../ui/Spinner";
 import EmptyCollection from "../ui/EmptyCollection";
+
+import DeleteCollectionModal from "../features/collections/DeleteCollectionModal";
+import UpdateCollectionModal from "../features/collections/UpdateCollectionModal";
+import { useCategoriesByCollectionId } from "../features/categories/useCategoriesForCollectionId";
+import DeleteCategoryModal from "../features/categories/DeleteCategoryModal";
+import AddCategoryModal from "../features/categories/addCategoryModal";
+import UpdateCategoryModal from "../features/categories/UpdateCategoryModal";
+import AddBookmarkModal from "../features/bookmarks/AddBookmarkModal";
+import DeleteBookmarkModal from "../features/bookmarks/DeleteBookmarkModal";
+import UpdateBookmarkModal from "../features/bookmarks/UpdateBookmarkModal";
 
 export default function Main() {
   const { collectionId } = useParams();
@@ -13,30 +22,38 @@ export default function Main() {
       ? Number(collectionId)
       : null;
 
-  const { isLoading, collection, error } = useCollectionById(validCollectionId);
+  const {isLoading:isLoadingCategories, categories, error:errorCategories} = useCategoriesByCollectionId(validCollectionId);
 
-  if (isLoading)
+  if (isLoadingCategories)
     return (
       <div className="w-full flex items-center justify-center py-20">
         <Spinner size="huge" />
       </div>
     );
-  if (!collection) return <div>Collection not found</div>;
+  if (!categories) return <div>Collection not found</div>;
 
-  if (error) return <div>Error: {error.message}</div>;
+  if (errorCategories) return <div>Error: {errorCategories.message}</div>;
 
   return (
     <div>
-      {collection.categories.length > 0 && (
+      {categories.length > 0 && (
         <>
           <Heading className="text-slate-300 text-center text-3xl" level={2}>
             Categories:
           </Heading>
           <AddCategory />
-          <CategoriesList categories={collection.categories} />
+          <CategoriesList categories={categories} />
         </>
       )}
-      {collection.categories.length === 0 && <EmptyCollection />}
+      {categories.length === 0 && <EmptyCollection />}
+      <DeleteCollectionModal />
+      <UpdateCollectionModal />
+      <DeleteCategoryModal />
+      <AddCategoryModal />
+      <UpdateCategoryModal />
+      <AddBookmarkModal />
+      <DeleteBookmarkModal />
+      <UpdateBookmarkModal />
     </div>
   );
 }

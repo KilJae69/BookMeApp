@@ -11,6 +11,7 @@ import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
 
 import Main from "./pages/Main";
+import { AuthSubscriber } from "./features/authentication/AuthSubscriber";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,6 +20,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthSubscriber />
       <RouterProvider router={router} />
       <Toaster
         toastOptions={{

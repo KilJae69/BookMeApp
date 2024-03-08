@@ -5,8 +5,7 @@ function FormRow({label,error,children,labelVariation,inputId}) {
       <div>
         {label && <Label variation={labelVariation} htmlFor={inputId}>{label}</Label>}
         <div className="mt-2">
-          {children}
-          
+          {children} 
         </div>
         {{error} && <p className="text-red-500 text-xs mt-1">{error}</p>}
       </div>

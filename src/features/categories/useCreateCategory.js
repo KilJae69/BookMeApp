@@ -3,15 +3,15 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createCategory as createCategoryApi } from "../../services/apiCategories";
 import toast from "react-hot-toast";
 
-export function useCreateCategory(onSuccessCallback) {
+export function useCreateCategory(collectionId) {
   const queryClient = useQueryClient();
 
-  const { mutate: createCategory, status } = useMutation({
+  const { mutate: createCategory, isPending:isCreating } = useMutation({
     mutationFn: ({ newCategory }) => createCategoryApi(newCategory),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["categories"]);
+    onSuccess: () => {
+      queryClient.invalidateQueries(["categories", collectionId]);
       toast.success("Category created successfully");
-      if (onSuccessCallback) onSuccessCallback(data);
+     
     },
     onError: (error) => {
       console.error("Error creating category", error);
@@ -19,7 +19,6 @@ export function useCreateCategory(onSuccessCallback) {
     },
   });
 
-  const isLoading = status === "loading";
 
-  return { createCategory, isLoading };
+  return { createCategory, isCreating };
 }

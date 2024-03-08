@@ -1,0 +1,53 @@
+import { HiExclamationTriangle } from "react-icons/hi2";
+import Modal from "../../components/Modals/Modal";
+import useDeleteCollectionModal from "../../store/useDeleteCollectionModal";
+import { useDeleteCollection } from "./useDeleteCollection";
+import Spinner from "../../ui/Spinner";
+import { useNavigate } from "react-router-dom";
+
+function DeleteCollectionModal() {
+  const navigate = useNavigate();
+  const { collectionId, onClose, isOpen } = useDeleteCollectionModal();
+  const { isDeleting, deleteCollection } = useDeleteCollection(()=> navigate(`/dashboard`));
+
+  const handleConfirmDelete = () => {
+    if (collectionId) {
+      deleteCollection(collectionId);
+      !isDeleting && onClose();
+    }
+  };
+
+  const bodyContent = isDeleting ? (
+    <div className="flex py-18 justify-center items-center min-h-[100px] ">
+      <Spinner size="huge" />
+    </div>
+  ) : (
+    <div>
+      <div className="p-5">
+        <div className="mt-2 text-center">
+          <div className="">
+            <p className="text-md text-gray-500">
+              Are you sure you want to delete this collection? All of your
+              categories and bookmarks within this collection will be removed
+              permanently from our servers forever. This action cannot be
+              undone.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <Modal
+      onSubmit={handleConfirmDelete}
+      icon={<HiExclamationTriangle className="text-rose-600 h-8 w-8" />}
+      body={bodyContent}
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Delete collection"
+    />
+  );
+}
+
+export default DeleteCollectionModal;
