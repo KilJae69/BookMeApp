@@ -1,5 +1,5 @@
 import { HiPlus } from "react-icons/hi";
-import Button from "../../ui/Button";
+import Button from "../../components/buttons/Button";
 import useAddCategoryModalStore from "../../store/useAddCategoryModalStore";
 
 

@@ -1,24 +1,42 @@
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import Input from "../../components/inputs/Input";
+import { useForm } from "react-hook-form";
+import Form from "../../ui/Form";
+import useDebounce from "../../hooks/useDebounce";
+import { useSearchBookmarks } from "./useSearchBookmarks";
 
 function SearchBookmarks() {
-    return (
-      <form className="relative flex flex-1" action="#" method="GET">
-        <label htmlFor="search-field" className="sr-only">
-          Search
-        </label>
-        <HiMagnifyingGlass
-          className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-          aria-hidden="true"
-        />
-        <input
-          id="search-field"
-          className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-          placeholder="Search bookmarks..."
-          type="search"
-          name="search"
-        />
-      </form>
-    );
+  const { register,watch} = useForm();
+  const searchRegister = register("search");
+  const searchTerm = watch("search");
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    useSearchBookmarks(debouncedSearchTerm);
+
+   
+  return (
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+      variation="search"
+    >
+      <HiMagnifyingGlass
+        className="pointer-events-none h-7 w-7 text-gray-400"
+        aria-hidden="true"
+      />
+      <span className="sr-only">Search</span>
+      <Input
+        id="search"
+        name="search"
+        label="Search bookmarks..."
+        disabled={false}
+        variation="search"
+        type="search"
+        register={() => searchRegister}
+      />
+
+    </Form>
+  );
 }
 
-export default SearchBookmarks
+export default SearchBookmarks;

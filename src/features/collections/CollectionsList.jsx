@@ -1,9 +1,13 @@
+import useAuthStore from "../../store/useAuthStore";
 import Spinner from "../../ui/Spinner";
 import CollectionItem from "./CollectionItem";
 import { useCollections } from "./useCollections";
 
+
 function CollectionsList() {
-  const { collections, isLoading } = useCollections();
+  const { user } = useAuthStore();
+  const userId = user?.id;
+  const { collections, isLoading } = useCollections(userId);
 
   return (
     <ul role="list" className="-mx-2 space-y-1">

@@ -2,14 +2,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteBookmark as deleteBookmarkApi } from "../../services/apiBookmarks";
 import toast from "react-hot-toast";
 
-export function useDeleteBookmark(collectionId, onSuccessCallback) {
+export function useDeleteBookmark(categoryId, onSuccessCallback) {
   const queryClient = useQueryClient();
+  
   const { mutate: deleteBookmark, isPending: isDeleting } = useMutation({
     mutationFn: (bookmarkId) => deleteBookmarkApi(bookmarkId),
     onSuccess: () => {
+      
       queryClient.invalidateQueries({
-        queryKey: ["categories", Number(collectionId)],
+        queryKey: ["bookmarks", categoryId],
+        
       });
+      
       toast.success("Bookmark deleted");
       if (onSuccessCallback) onSuccessCallback();
     },

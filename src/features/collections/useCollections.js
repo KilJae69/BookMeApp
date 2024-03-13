@@ -1,12 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCollections } from "../../services/apiCollections";
 
-import useAuthStore from "../../store/useAuthStore";
 
-export function useCollections() {
+export function useCollections(userId) {
 
-  const {user} = useAuthStore()
-  const userId = user?.id
 
   const {
     isLoading,

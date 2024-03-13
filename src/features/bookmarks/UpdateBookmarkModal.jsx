@@ -7,7 +7,7 @@ import {  useForm } from "react-hook-form";
 import { useEffect } from "react";
 import Input from "../../components/inputs/Input";
 
-import { useParams } from "react-router-dom";
+
 import useUpdateBookmarkModalStore from "../../store/useUpdateBookmarkModalStore";
 import Spinner from "../../ui/Spinner";
 import { useUpdateBookmark } from "./useUpdateBookmark";
@@ -15,7 +15,6 @@ import useFetchMetadata from "../../hooks/useFetchMetadata";
 import { formatInputForFetch as formatUrlForStorage } from "../../helpers/formatInputForFetch";
 
 function UpdateBookmarkModal() {
-  const { collectionId } = useParams();
   const {
     register,
     handleSubmit,
@@ -25,7 +24,7 @@ function UpdateBookmarkModal() {
     watch,
   } = useForm();
   const updateBookmarkModal = useUpdateBookmarkModalStore();
-  const { updateBookmark, isUpdating } = useUpdateBookmark(collectionId);
+  const { updateBookmark, isUpdating } = useUpdateBookmark();
   const { metadata, isFetching, fetchMetadata } = useFetchMetadata();
   const defaultFavicon = "/favicon-standard.png";
 
@@ -67,7 +66,7 @@ function UpdateBookmarkModal() {
     const favicon =
       urlChanged && metadata?.icon
         ? metadata.icon
-        : bookmarkData.favicon || defaultFavicon;
+        : defaultFavicon;
 
     const updatedBookmark = {
       title: data.title,

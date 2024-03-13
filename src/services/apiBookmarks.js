@@ -17,7 +17,8 @@ export async function getBookmarksByCategoryId(categoryId) {
 export async function createBookmark(newBookmark) {
   const { data, error } = await supabase
     .from("bookmarks")
-    .insert([newBookmark]);
+    .insert([newBookmark])
+    .select();
 
   if (error) {
     console.error(error);
@@ -37,6 +38,7 @@ export async function deleteBookmark(bookmarkId) {
     console.error(error);
     throw new Error("Error deleting this bookmark");
   }
+
 }
 
 export async function updateBookmark(bookmarkId, updatedBookmark) {
@@ -45,6 +47,7 @@ export async function updateBookmark(bookmarkId, updatedBookmark) {
     .update(updatedBookmark)
     .eq("id", bookmarkId)
     .select();
+  
 
   if (error) {
     console.error(error);
@@ -55,3 +58,27 @@ export async function updateBookmark(bookmarkId, updatedBookmark) {
   return data;
 }
 
+export async function searchBookmarks(searchTerm) {
+  const { data, error } = await supabase
+    .from("bookmarks")
+    .select(
+      `
+        *,
+        categories:category_id (
+          category_name,
+          color,
+          collections:collection_id (
+            collection_name
+          )
+        )
+    `
+    )
+    .ilike("title", `%${searchTerm}%`);
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data;
+}

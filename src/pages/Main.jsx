@@ -14,6 +14,8 @@ import UpdateCategoryModal from "../features/categories/UpdateCategoryModal";
 import AddBookmarkModal from "../features/bookmarks/AddBookmarkModal";
 import DeleteBookmarkModal from "../features/bookmarks/DeleteBookmarkModal";
 import UpdateBookmarkModal from "../features/bookmarks/UpdateBookmarkModal";
+import useSearchStore from "../store/useSearchStore";
+import SearchResults from "../features/bookmarks/SearchResults";
 
 export default function Main() {
   const { collectionId } = useParams();
@@ -23,6 +25,20 @@ export default function Main() {
       : null;
 
   const {isLoading:isLoadingCategories, categories, error:errorCategories} = useCategoriesByCollectionId(validCollectionId);
+
+  const {isLoading:isSearching, searchedBookmarks} = useSearchStore()
+
+  if (isSearching) return <div>Loading...</div>;
+  
+  
+    if(!isSearching && searchedBookmarks?.length > 0) return (
+      <SearchResults searchResults={searchedBookmarks}/>
+    );
+  
+    if(!isSearching && searchedBookmarks?.length === 0) return (
+      <div>No bookmarks found.</div>
+    );
+  
 
   if (isLoadingCategories)
     return (
@@ -43,10 +59,7 @@ export default function Main() {
           </Heading>
           <AddCategory />
           <CategoriesList categories={categories} />
-        </>
-      )}
-      {categories.length === 0 && <EmptyCollection />}
-      <DeleteCollectionModal />
+           <DeleteCollectionModal />
       <UpdateCollectionModal />
       <DeleteCategoryModal />
       <AddCategoryModal />
@@ -54,6 +67,11 @@ export default function Main() {
       <AddBookmarkModal />
       <DeleteBookmarkModal />
       <UpdateBookmarkModal />
+        </>
+      )}
+      {categories.length === 0 && <EmptyCollection />}
+      
+     
     </div>
   );
 }

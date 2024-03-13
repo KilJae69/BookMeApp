@@ -2,7 +2,7 @@ import Logo from "../components/Logo";
 import BackgroundShape from "../ui/BackgroundShape";
 import Heading from "../ui/Heading";
 import SignupForm from "../features/authentication/SignupForm";
-import SocialButton from "../ui/SocialButton";
+import SocialButton from "../components/buttons/SocialButton";
 
 function RegisterPage() {
   return (

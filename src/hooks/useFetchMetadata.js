@@ -25,7 +25,7 @@ const useFetchMetadata = () => {
       }
       const data = await response.json();
      if(data && data.title) setMetadata(data);
-     if(!data || !data.title) setMetadata({title:inputUrl});
+     if(!data || !data.title) setMetadata({title:inputUrl,favicon:"/favicon-standard.png"});
       setLastFetchedUrl(inputUrl);
     } catch (err) {
       setError(err.message);

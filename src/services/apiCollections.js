@@ -14,26 +14,13 @@ export async function getCollections(userId) {
   return collections;
 }
 
-export async function getCollectionById(collectionId) {
-  const { data: collection, error } = await supabase
-    .from("collections")
-    .select("*,categories(*,bookmarks(*))")
-    .eq("id", collectionId)
-    .single();
-
-  if (error) {
-    console.error(error);
-    throw new Error("Error fetching collection");
-  }
-
-  return collection;
-}
 
 export async function createCollection(newCollection) {
   const { data, error } = await supabase
     .from("collections")
     .insert([newCollection])
     .select();
+    
 
   if (error) {
     console.error(error);
@@ -48,7 +35,7 @@ export async function updateCollection(collectionId, newName) {
     .from("collections")
     .update({ collection_name: newName })
     .eq("id", collectionId)
-    .select();
+    
 
   if (error) {
     console.error(error);

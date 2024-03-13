@@ -1,6 +1,6 @@
 import Header from "../components/LandingPageHeader/Header";
 import BackgroundShape from "../ui/BackgroundShape";
-import Button from "../ui/Button";
+import Button from "../components/buttons/Button";
 
 function LandingPage() {
   return (

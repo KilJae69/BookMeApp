@@ -1,4 +1,4 @@
-import Button from "../../ui/Button";
+import Button from "../buttons/Button";
 
 import Logo from "../Logo";
 import MobileMenuButton from "./MobileMenuButton";

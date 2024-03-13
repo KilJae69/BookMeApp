@@ -7,18 +7,21 @@ import {
   HiOutlineStar,
   HiStar
 } from "react-icons/hi";
-import IconButton from "../../ui/IconButton";
+import IconButton from "../../components/buttons/IconButton";
 import { useState } from "react";
 import useDeleteBookmarkModal from "../../store/useDeleteBookmarkModalStore";
 import useUpdateBookmarkModalStore from "../../store/useUpdateBookmarkModalStore";
+import { applyCategoryTheme } from "../../helpers/applyCategoryTheme";
 
-function BookmarkItem({ bookmark, categoryTheme }) {
+function BookmarkItem({ bookmark, categoryColor}) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFavourite, setIsFavourite] = useState(false);
   const [toggleDescription, setToggleDescription] = useState(false);
   const deleteBookmarkModal = useDeleteBookmarkModal();
   const defaultFavicon = "/favicon-standard.png";
- 
+  const categoryId = bookmark.category_id;
+  const categoryTheme = applyCategoryTheme(categoryColor);
+
   const updateBookmarkModal = useUpdateBookmarkModalStore();
 
   const handleMouseEnter = () => {
@@ -38,7 +41,7 @@ function BookmarkItem({ bookmark, categoryTheme }) {
 
   const handleToggleDeleteBookmarkModal = () => {
    
-    deleteBookmarkModal.onOpen(bookmark.id);
+    deleteBookmarkModal.onOpen(bookmark.id, categoryId);
   }
 
   return (
@@ -112,5 +115,6 @@ function BookmarkItem({ bookmark, categoryTheme }) {
     </li>
   );
 }
+
 
 export default BookmarkItem;

@@ -5,7 +5,7 @@ import Logo from "../Logo";
 
 import Navigation from "./Navigation";
 // import MobileMenu from "./MobileMenu";
-import Button from "../../ui/Button";
+import Button from "../buttons/Button";
 
 const navigation = [
   { name: "Product", href: "#" },

@@ -1,5 +1,5 @@
 import BackgroundShape from "../ui/BackgroundShape";
-import Button from "../ui/Button";
+import Button from "../components/buttons/Button";
 import Heading from "../ui/Heading";
 
 function PageNotFound() {

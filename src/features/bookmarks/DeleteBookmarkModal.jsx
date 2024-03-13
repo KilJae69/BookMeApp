@@ -4,20 +4,17 @@ import Modal from "../../components/Modals/Modal";
 import Spinner from "../../ui/Spinner";
 import useDeleteBookmarkModal from "../../store/useDeleteBookmarkModalStore.js";
 import { useDeleteBookmark } from "./useDeleteBookmark.js";
-import { useParams } from "react-router-dom";
+
 
 
 function DeleteBookmarkModal() {
- const {collectionId} = useParams();
-  const { bookmarkId, onClose, isOpen } = useDeleteBookmarkModal();
-  const { isDeleting, deleteBookmark } = useDeleteBookmark(
-    Number(collectionId)
-  );
+ 
+  const { bookmarkId,categoryId, onClose, isOpen } = useDeleteBookmarkModal();
+  const { isDeleting, deleteBookmark } = useDeleteBookmark(categoryId, ()=> onClose());
 
   const handleConfirmDelete = () => {
     if (bookmarkId) {
       deleteBookmark(bookmarkId);
-      !isDeleting && onClose();
     }
   };
 

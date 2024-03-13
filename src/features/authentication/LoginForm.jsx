@@ -1,5 +1,5 @@
 
-import Button from "../../ui/Button";
+import Button from "../../components/buttons/Button";
 import Form from "../../ui/Form";
 import { useLogin } from "./useLogin";
 import SpinnerMini from "../../ui/Spinner";

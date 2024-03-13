@@ -1,6 +1,6 @@
 import Logo from "../components/Logo";
 import Heading from "../ui/Heading";
-import SocialButton from "../ui/SocialButton";
+import SocialButton from "../components/buttons/SocialButton";
 import LoginForm from "../features/authentication/LoginForm";
 import BackgroundShape from "../ui/BackgroundShape";
 import { useGithubLogin } from "../features/authentication/useGithubLogin";

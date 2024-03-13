@@ -7,11 +7,12 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./pages/PageNotFound";
 import RegisterPage from "./pages/RegisterPage";
-import AppLayout from "./ui/AppLayout";
-import ProtectedRoute from "./ui/ProtectedRoute";
+import AppLayout from "./components/MainApp/AppLayout";
+import ProtectedRoute from "./components/MainApp/ProtectedRoute";
 
 import Main from "./pages/Main";
 import { AuthSubscriber } from "./features/authentication/AuthSubscriber";
+import SearchResults from "./features/bookmarks/SearchResults";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: ":collectionId",
         element: <Main />,
+      },
+      {
+        path: ":search",
+        element: <SearchResults />,
       },
     ],
   },

@@ -8,7 +8,15 @@ const Input = ({
   register,
   validationRules,
   onBlur,
+  variation = "primary"
 }) => {
+
+  const base =
+    "p-3 pt-5 peer w-full text-sm font-light bg-white outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
+  const styles = {
+    primary: base + " border-2 rounded-md ",
+    search: base + " focus:ring-2 focus:ring-rose-200 rounded-md ",
+  }
 
   const {ref,onBlur:formOnBlur,...rest} = register(id, validationRules);
   const handleBlur = (e) => {
@@ -27,7 +35,7 @@ const Input = ({
         disabled={disabled}
         placeholder=" "
         type={type}
-        className={`peer w-full p-3 pt-5 text-sm font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70 disabled:cursor-not-allowed
+        className={`${styles[variation]}
           ${errors && errors[id] ? "border-rose-500" : "border-neutral-300"}
           ${
             errors && errors[id]

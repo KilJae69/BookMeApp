@@ -3,7 +3,7 @@ import supabase from "./supabase";
 export async function getCategoriesByCollectionId(collectionId) {
   const { data: categories, error } = await supabase
     .from("categories")
-    .select("*,bookmarks(*)")
+    .select("*")
     .eq("collection_id", collectionId)
     .order("id", { ascending: true });
 
@@ -46,7 +46,7 @@ export async function updateCategory(categoryId, updatedCategory) {
     .from("categories")
     .update(updatedCategory)
     .eq("id", categoryId)
-    .select();
+ 
 
   if (error) {
     console.error(error);

@@ -4,17 +4,15 @@ import { applyCategoryTheme } from "../../helpers/applyCategoryTheme";
 import useDeleteCategoryModal from "../../store/useDeleteCategoryModalStore";
 import EditActionsDropdown from "../../ui/EditActionsDropdown";
 import { HiChevronRight } from "react-icons/hi";
-import Button from "../../ui/Button";
-import useAddBookmarkModalStore from "../../store/useAddBookmarkModalStore";
+
 import useUpdateCategoryModalStore from "../../store/useUpdateCategoryModalStore";
 import BookmarksList from "../bookmarks/BookmarksList";
 
 function CategoriesItem({ category }) {
-  const { id: categoryId, category_name: name, color, bookmarks } = category;
+  const { id: categoryId, category_name: name, color } = category;
   const theme = applyCategoryTheme(color);
   const updateCategoryModal = useUpdateCategoryModalStore();
   const deleteCategoryModal = useDeleteCategoryModal();
-  const addBookmarkModal = useAddBookmarkModalStore();
 
   const handleEdit = () => {
     updateCategoryModal.onOpen(category);
@@ -46,10 +44,10 @@ function CategoriesItem({ category }) {
                 <span className=" max-w-[100%] truncate font-medium text-gray-900">
                   {name}
                 </span>
-                <p className="truncate text-gray-500">
+                {/* <p className="truncate text-gray-500">
                   {bookmarks.length}{" "}
                   {bookmarks.length === 1 ? "Bookmark" : "Bookmarks"}
-                </p>
+                </p> */}
               </div>
             </Disclosure.Button>
             <EditActionsDropdown
@@ -62,19 +60,7 @@ function CategoriesItem({ category }) {
             as="div"
             className="px-4 pt-4 pb-2 text-sm text-gray-500"
           >
-            {bookmarks.length !== 0 ? (
-              <BookmarksList categoryTheme={theme} bookmarks={bookmarks} />
-            ) : (
-              <p>No bookmarks in this category</p>
-            )}
-            <div className="py-3 ">
-              <Button
-                onClick={() => addBookmarkModal.onOpen(categoryId)}
-                variation="form"
-              >
-                Add bookmark
-              </Button>
-            </div>
+            <BookmarksList categoryColor={color} categoryId={categoryId} />
           </Disclosure.Panel>
         </>
       )}
