@@ -4,7 +4,6 @@ import { getCollections } from "../../services/apiCollections";
 
 export function useCollections(userId) {
 
-
   const {
     isLoading,
     data: collections,

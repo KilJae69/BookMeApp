@@ -1,15 +1,17 @@
-import { HiOutlineSun } from "react-icons/hi2";
+import { HiOutlineSun, HiOutlineMoon } from "react-icons/hi2";
+import IconButton from "./IconButton";
+import useThemeStore from "../../store/useThemeStore";
 
 function ToggleDarkMode() {
-    return (
-      <button
-        type="button"
-        className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-      >
-        <span className="sr-only">Toggle Dark/Light Mode</span>
-        <HiOutlineSun className="h-6 w-6" aria-hidden="true" />
-      </button>
-    );
+  const { theme, toggleTheme } = useThemeStore();
+
+  return (
+    <IconButton
+      onClick={toggleTheme}
+      className="text-primary500 dark:text-primaryDark500 hover:text-primary600 dark:hover:text-primaryDark600 transition-colors duration-200 ease-in-out"
+      Icon={theme === "light" ? HiOutlineMoon : HiOutlineSun}
+    />
+  );
 }
 
-export default ToggleDarkMode
+export default ToggleDarkMode;

@@ -1,77 +1,92 @@
-import Heading from "../ui/Heading";
-import CategoriesList from "../features/categories/CategoriesList";
-import AddCategory from "../features/categories/AddCategory";
 import { useParams } from "react-router-dom";
-import Spinner from "../ui/Spinner";
-import EmptyCollection from "../ui/EmptyCollection";
 
-import DeleteCollectionModal from "../features/collections/DeleteCollectionModal";
-import UpdateCollectionModal from "../features/collections/UpdateCollectionModal";
+import useSearchStore from "../store/useSearchStore";
+import { useValidateCollection } from "../hooks/useValidateCollection";
+
+import EmptyCollection from "../components/EmptyCollection";
+import Heading from "../components/Heading";
+import CategoriesList from "../features/categories/CategoriesList";
+
 import { useCategoriesByCollectionId } from "../features/categories/useCategoriesForCollectionId";
 import DeleteCategoryModal from "../features/categories/DeleteCategoryModal";
-import AddCategoryModal from "../features/categories/addCategoryModal";
 import UpdateCategoryModal from "../features/categories/UpdateCategoryModal";
 import AddBookmarkModal from "../features/bookmarks/AddBookmarkModal";
 import DeleteBookmarkModal from "../features/bookmarks/DeleteBookmarkModal";
 import UpdateBookmarkModal from "../features/bookmarks/UpdateBookmarkModal";
-import useSearchStore from "../store/useSearchStore";
-import SearchResults from "../features/bookmarks/SearchResults";
+import SearchResults from "../features/search/SearchResults";
+import CategoriesSkeletonLoader from "../components/skeletons/CategoriesSkeletonLoader";
+
+import AddCategoryModal from "../features/categories/addCategoryModal";
+import SearchResultsSkeleton from "../components/skeletons/SearchResultsSkeleton";
+import CollectionNotFound from "../components/CollectionNotFound";
+import MainHeader from "../components/MainApp/MainHeader";
+import EmptySearch from "../features/search/EmptySearch";
 
 export default function Main() {
+  const isValidCollection = useValidateCollection();
   const { collectionId } = useParams();
-  const validCollectionId =
-    Number(collectionId) && !isNaN(Number(collectionId))
-      ? Number(collectionId)
-      : null;
 
-  const {isLoading:isLoadingCategories, categories, error:errorCategories} = useCategoriesByCollectionId(validCollectionId);
+  const validCollectionId = Number(collectionId);
 
-  const {isLoading:isSearching, searchedBookmarks} = useSearchStore()
+  const {
+    isLoading: isLoadingCategories,
+    categories,
+    error: errorCategories,
+  } = useCategoriesByCollectionId(validCollectionId);
 
-  if (isSearching) return <div>Loading...</div>;
-  
-  
-    if(!isSearching && searchedBookmarks?.length > 0) return (
-      <SearchResults searchResults={searchedBookmarks}/>
-    );
-  
-    if(!isSearching && searchedBookmarks?.length === 0) return (
-      <div>No bookmarks found.</div>
-    );
-  
-
-  if (isLoadingCategories)
-    return (
-      <div className="w-full flex items-center justify-center py-20">
-        <Spinner size="huge" />
-      </div>
-    );
-  if (!categories) return <div>Collection not found</div>;
-
-  if (errorCategories) return <div>Error: {errorCategories.message}</div>;
+  const {
+    isLoading: isSearching,
+    searchedBookmarks,
+    searchTerm,
+  } = useSearchStore();
 
   return (
-    <div>
-      {categories.length > 0 && (
-        <>
-          <Heading className="text-slate-300 text-center text-3xl" level={2}>
-            Categories:
-          </Heading>
-          <AddCategory />
-          <CategoriesList categories={categories} />
-           <DeleteCollectionModal />
-      <UpdateCollectionModal />
+    <>
+      {isValidCollection && <MainHeader />}
+      {isSearching && <SearchResultsSkeleton />}
+
+      {!isSearching && searchedBookmarks?.length > 0 && (
+        <SearchResults searchResults={searchedBookmarks} />
+      )}
+
+      {!isSearching && searchedBookmarks?.length === 0 && searchTerm && (
+        <EmptySearch />
+      )}
+
+      {isLoadingCategories && <CategoriesSkeletonLoader />}
+
+      {!isValidCollection && !isLoadingCategories && <CollectionNotFound />}
+
+      {errorCategories && <div>Error: {errorCategories.message}</div>}
+
+      {categories &&
+        categories.length === 0 &&
+        !isSearching &&
+        isValidCollection &&
+        !searchTerm && <EmptyCollection />}
+
+      {isValidCollection &&
+        categories &&
+        categories.length > 0 &&
+        !isSearching &&
+        !searchTerm && (
+          <div className="p-5">
+            <Heading
+              className="text-primary600 dark:text-white text-center text-3xl"
+              level={1}
+            >
+              Categories:
+            </Heading>
+            <CategoriesList categories={categories} />
+          </div>
+        )}
+
       <DeleteCategoryModal />
-      <AddCategoryModal />
       <UpdateCategoryModal />
+      <AddCategoryModal />
       <AddBookmarkModal />
       <DeleteBookmarkModal />
       <UpdateBookmarkModal />
-        </>
-      )}
-      {categories.length === 0 && <EmptyCollection />}
-      
-     
-    </div>
+    </>
   );
 }

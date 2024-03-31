@@ -8,21 +8,20 @@ const Input = ({
   register,
   validationRules,
   onBlur,
-  variation = "primary"
+  variation = "primary",
 }) => {
-
   const base =
-    "p-3 pt-5 peer w-full text-sm font-light bg-white outline-none transition disabled:opacity-70 disabled:cursor-not-allowed";
+    "p-3 pt-5 peer w-full text-sm font-light dark:text-white bg-secondaryBg dark:bg-secondaryBgDark outline-none transition disabled:opacity-70 disabled:cursor-not-allowed focus:ring-2 focus:ring-lightOutline dark:focus:ring-darkOutline rounded-md";
   const styles = {
-    primary: base + " border-2 rounded-md ",
-    search: base + " focus:ring-2 focus:ring-rose-200 rounded-md ",
-  }
+    primary: base + " border rounded-md autofill-bg-primary500",
+    search: base + "  ",
+  };
 
-  const {ref,onBlur:formOnBlur,...rest} = register(id, validationRules);
+  const { ref, onBlur: formOnBlur, ...rest } = register(id, validationRules);
   const handleBlur = (e) => {
     formOnBlur(e);
     onBlur && onBlur(e);
-  }
+  };
 
   return (
     <div className="w-full relative">
@@ -36,17 +35,17 @@ const Input = ({
         placeholder=" "
         type={type}
         className={`${styles[variation]}
-          ${errors && errors[id] ? "border-rose-500" : "border-neutral-300"}
+          ${errors && errors[id] ? "border-primary500" : "border-neutral-300"}
           ${
             errors && errors[id]
-              ? "focus:border-rose-500"
-              : "focus:border-rose-200"
-          }`}
+              ? "focus:border-primary500"
+              : "focus:border-lightOutline"
+          } whitespace-nowrap`}
       />
       <label
         htmlFor={id}
-        className={`absolute text-sm duration-150 transform -translate-y-3 left-5 top-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
-          errors && errors[id] ? "text-rose-500" : "text-zinc-400"
+        className={`absolute truncate text-xs duration-150 transform -translate-y-3 left-5 top-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 ${
+          errors && errors[id] ? "text-primary500" : "text-zinc-400"
         }`}
       >
         {label}

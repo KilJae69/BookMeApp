@@ -10,8 +10,10 @@ export function useDeleteBookmark(categoryId, onSuccessCallback) {
     onSuccess: () => {
       
       queryClient.invalidateQueries({
-        queryKey: ["bookmarks", categoryId],
-        
+        queryKey: ["bookmarks", categoryId], 
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["searchBookmarks"], 
       });
       
       toast.success("Bookmark deleted");

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getCategoriesByCollectionId as getCategoriesByCollectionIdApi } from "../../services/apiCategories";
 
+
 export function useCategoriesByCollectionId(collectionId) {
   const {
     isLoading,

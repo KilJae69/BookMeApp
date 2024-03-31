@@ -6,28 +6,32 @@ export function AuthSubscriber() {
   const { setUser, clearUser, setInitialized } = useAuthStore();
 
   useEffect(() => {
+    // Async function to fetch session and user
+    async function checkAuthState() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        clearUser();
+      }
+      setInitialized(true);
+    }
+
+    // Call the async function
+    checkAuthState();
+
+    // Listen for auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-     
-
-        switch (event) {
-          case "SIGNED_IN":
-          case "INITIAL_SESSION":
-            if (session?.user) {
-              setUser(session.user);
-            }
-            break;
-          case "SIGNED_OUT":
-          case "TOKEN_REFRESHED":
-          case "USER_UPDATED":
-            clearUser();
-            break;
-          default:
-            console.log("Unhandled auth event:", event);
+      async (event, session) => {
+        if (["SIGNED_IN", "TOKEN_REFRESHED", "USER_UPDATED"].includes(event)) {
+          session?.user ? setUser(session.user) : clearUser();
+        } else if (event === "SIGNED_OUT") {
+          clearUser();
         }
-
-        // Mark as initialized after handling the initial session
-        setInitialized();
+       
       }
     );
 
@@ -37,7 +41,5 @@ export function AuthSubscriber() {
     };
   }, [setUser, clearUser, setInitialized]);
 
-  // This component doesn't render anything; it just sets up the listener
   return null;
 }
-

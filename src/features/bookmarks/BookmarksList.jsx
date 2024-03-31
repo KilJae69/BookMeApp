@@ -15,12 +15,14 @@ function BookmarksList({ categoryColor, categoryId }) {
       </ul>
     );
 
-  if (error) return <div>Error loading bookmarks</div>;
+  if (error) return (
+    <div className="dark:text-textPrimaryDark">Error loading bookmarks</div>
+  );
 
   if (!bookmarks || bookmarks.length === 0)
     return (
       <>
-        <p>No bookmarks in this category</p>
+        <p className="dark:text-textPrimaryDark">No bookmarks in this category</p>
         <div className="py-3 ">
           <Button
             onClick={() => addBookmarkModal.onOpen(categoryId)}

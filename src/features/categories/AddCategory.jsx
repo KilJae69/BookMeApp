@@ -1,28 +1,34 @@
-import { HiPlus } from "react-icons/hi";
+
 import Button from "../../components/buttons/Button";
 import useAddCategoryModalStore from "../../store/useAddCategoryModalStore";
+import { HiFolderPlus } from "react-icons/hi2";
 
 
-
-function AddCategory() {
+function AddCategory({compact}) {
 const addCategoryModal = useAddCategoryModalStore();
 
+const handleClick = (e) => {
+  e.stopPropagation();
+  addCategoryModal.onOpen();
+}
+
+const compactStyle = compact ? "":""
 
   return (
-    <div>
-      <Button
-        onClick={(e)=>{
-          e.stopPropagation();
-          addCategoryModal.onOpen()}}
-        variation="primary"
-      >
-        <div className="flex gap-2">
-          <HiPlus className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-          <span>New Category</span>
-        </div>
-      </Button>
-     
-    </div>
+    <>
+      <div>
+        <Button onClick={handleClick} className={compactStyle} variation="add">
+          <div className="flex items-center gap-2 justify-center">
+            <HiFolderPlus
+              className="-ml-0.5 h-7 w-7 sm:h-5 sm:w-5"
+              aria-hidden="true"
+            />
+            {!compact && <span className="">New Category</span>}
+            {compact && <span className="hidden sm:block">New Category</span>}
+          </div>
+        </Button>
+      </div>
+    </>
   );
 }
 

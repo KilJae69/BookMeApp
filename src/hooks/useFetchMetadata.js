@@ -1,41 +1,47 @@
 import { useState } from "react";
+
+import supabase from "../services/supabase";
 import { formatInputForFetch } from "../helpers/formatInputForFetch";
 
-const useFetchMetadata = () => {
-
+ const useFetchMetadata = () => {
   const [metadata, setMetadata] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState(null);
   const [lastFetchedUrl, setLastFetchedUrl] = useState("");
 
+
   const fetchMetadata = async (inputUrl) => {
     if (!inputUrl.trim() || inputUrl === lastFetchedUrl) return;
 
- 
     setIsFetching(true);
     setError(null);
 
     try {
-        const formattedUrl = formatInputForFetch(inputUrl);
-      const response = await fetch(
-        `http://localhost:3001/metadata?url=${encodeURIComponent(formattedUrl)}`
+      // Invoke the edge function
+      const { data, error } = await supabase.functions.invoke(
+        "fetch-metadata-node",
+        {
+          body: JSON.stringify({
+            url: formatInputForFetch(inputUrl),
+          }),
+        }
       );
-      if (!response.ok) {
-        throw new Error("Failed to fetch metadata");
-      }
-      const data = await response.json();
-     if(data && data.title) setMetadata(data);
-     if(!data || !data.title) setMetadata({title:inputUrl,favicon:"/favicon-standard.png"});
+
+      if (error) throw new Error(error.message);
+
+      if (data.metadata && data.metadata.title) setMetadata(data.metadata);
+      else setMetadata({ title: inputUrl, favicon: "/globe-grid.png" });
       setLastFetchedUrl(inputUrl);
+     
     } catch (err) {
       setError(err.message);
-      setMetadata({title:inputUrl});
+      setMetadata({ title: inputUrl });
     } finally {
       setIsFetching(false);
     }
   };
 
-  return {  metadata, isFetching, error, fetchMetadata,setMetadata };
+  return { metadata, isFetching, error, fetchMetadata, setMetadata };
 };
 
 export default useFetchMetadata;

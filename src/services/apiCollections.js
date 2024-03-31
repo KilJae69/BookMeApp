@@ -42,7 +42,7 @@ export async function updateCollection(collectionId, newName) {
     throw new Error("Error updating collection");
   }
 
-  console.log("Collection updated", data);
+  
   return data;
 }
 
@@ -56,6 +56,41 @@ export async function deleteCollection(collectionId) {
     console.error(error);
     throw new Error("Error deleting collection");
   }
+}
 
-  console.log("Collection deleted");
+export async function getCollectionsForExport(userId) {
+  const { data, error } = await supabase
+    .from("collections")
+    .select(
+      `
+      collection_name,
+      categories (
+        category_name,
+        bookmarks (
+          title,
+          url
+        )
+      )
+    `
+    )
+    .eq("user_id", userId)
+    .order("id", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    throw new Error("Error fetching collections for export");
+  }
+
+  const transformedData = data.map((collection) => ({
+    collectionName: collection.collection_name,
+    categories: collection.categories.map((category) => ({
+      categoryName: category.category_name,
+      bookmarks: category.bookmarks.map((bookmark) => ({
+        title: bookmark.title,
+        url: bookmark.url,
+      })),
+    })),
+  }));
+
+  return transformedData;
 }

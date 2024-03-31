@@ -2,7 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { applyCategoryTheme } from "../../helpers/applyCategoryTheme";
 
 import useDeleteCategoryModal from "../../store/useDeleteCategoryModalStore";
-import EditActionsDropdown from "../../ui/EditActionsDropdown";
+import EditActionsDropdown from "../../components/EditActionsDropdown";
 import { HiChevronRight } from "react-icons/hi";
 
 import useUpdateCategoryModalStore from "../../store/useUpdateCategoryModalStore";
@@ -23,12 +23,12 @@ function CategoriesItem({ category }) {
   return (
     <Disclosure
       as="div"
-      className="w-full col-span-1 flex flex-col rounded-md shadow-md transition-transform duration-300 cursor-pointer"
+      className="bg-secondaryBg dark:bg-secondaryBgDark w-full col-span-1 flex flex-col rounded-md shadow-md transition-transform duration-300 cursor-pointer "
     >
       {({ open }) => (
         <>
           <div className={` flex items-center justify-between rounded-md`}>
-            <Disclosure.Button className="group flex flex-1 truncate p-2 text-sm">
+            <Disclosure.Button className="group flex flex-1 truncate p-2 text-sm rounded-md focus:outline-none focus:border focus:border-lightOutline dark:focus:border-darkOutline">
               <div
                 className={`flex w-14 rounded-md transition flex-shrink-0 items-center justify-between text-sm font-medium text-white `}
               >
@@ -40,26 +40,34 @@ function CategoriesItem({ category }) {
                   } ${theme?.textLightGroupHover}`}
                 />
               </div>
-              <div className="flex flex-grow  truncate items-start flex-col">
-                <span className=" max-w-[100%] truncate font-medium text-gray-900">
+              <div className="flex flex-grow truncate items-start flex-col">
+                <span className=" max-w-[100%] truncate font-medium text-textPrimary900 dark:text-white">
                   {name}
                 </span>
-                {/* <p className="truncate text-gray-500">
-                  {bookmarks.length}{" "}
-                  {bookmarks.length === 1 ? "Bookmark" : "Bookmarks"}
-                </p> */}
               </div>
             </Disclosure.Button>
             <EditActionsDropdown
               categoryTheme={theme}
               onDelete={handleDelete}
               onEdit={handleEdit}
+              isDeleteAlwaysVisible={true}
             />
           </div>
           <Disclosure.Panel
             as="div"
-            className="px-4 pt-4 pb-2 text-sm text-gray-500"
+            className="px-4 pt-4 pb-2 text-sm text-textPrimary500 border-t border-gray-200 bg-secondaryBg dark:bg-secondaryBgDark rounded-b-md overflow-hidden"
           >
+            {category.description && (
+              <div>
+                <span className="font-semibold dark:text-white">
+                  Category description:
+                </span>
+                <p className="py-2 text-sm italic text-textPrimary400">
+                  {category.description}
+                </p>
+              </div>
+            )}
+
             <BookmarksList categoryColor={color} categoryId={categoryId} />
           </Disclosure.Panel>
         </>

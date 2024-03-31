@@ -1,18 +1,21 @@
 import { GiBookmark } from "react-icons/gi";
 import Modal from "../../components/Modals/Modal";
 
-import Form from "../../ui/Form";
+import Form from "../../components/Form";
 import Input from "../../components/inputs/Input";
-import TextArea from "../../ui/TextArea";
+import TextArea from "../../components/inputs/TextArea";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import useAddBookmarkModalStore from "../../store/useAddBookmarkModalStore";
 import useFetchMetadata from "../../hooks/useFetchMetadata";
 import { useCreateBookmark } from "./useCreateBookmark";
-import Spinner from "../../ui/Spinner";
+import Spinner from "../../components/Spinner";
 import { formatInputForFetch as formatUrlForStorage } from "../../helpers/formatInputForFetch";
+import useAuthStore from "../../store/useAuthStore";
 
-function AddBookmarkModal() {
+const AddBookmarkModal = memo(function AddBookmarkModal() {
+  const { user } = useAuthStore();
+  const userId = user?.id;
   const {
     register,
     handleSubmit,
@@ -22,10 +25,11 @@ function AddBookmarkModal() {
     watch,
   } = useForm();
   const addBookmarkModal = useAddBookmarkModalStore();
-  const { metadata, isFetching, fetchMetadata,setMetadata } = useFetchMetadata();
+  const { metadata, isFetching, fetchMetadata, setMetadata } =
+    useFetchMetadata();
   const { createBookmark, isCreating } = useCreateBookmark(handleClose);
 
-  const defaultFavicon = "/favicon-standard.png";
+  const defaultFavicon = "/globe-grid.svg";
   const url = watch("url");
 
   const handleUrlBlur = () => {
@@ -33,36 +37,34 @@ function AddBookmarkModal() {
     fetchMetadata(url);
   };
 
-  function handleClose(){
-    
+  function handleClose() {
     reset();
-    addBookmarkModal.onClose(()=>setMetadata({})); 
+    setMetadata({});
+    addBookmarkModal.onClose();
   }
-
 
   useEffect(() => {
     if (metadata.title) {
       setValue("title", metadata.title);
-   console.log("Effect",metadata.title)
     }
   }, [metadata, setValue, url]);
 
   function onSubmit(formData) {
-   
     const formattedUrlforStorage = formatUrlForStorage(formData.url);
     const newBookmark = {
       ...formData,
       url: formattedUrlforStorage,
-      favicon: metadata?.icon || defaultFavicon,
+      favicon: metadata?.icon || metadata.image || defaultFavicon,
       category_id: addBookmarkModal.categoryId,
+      user_id: userId,
     };
     createBookmark({ newBookmark });
-    
+    setMetadata({});
   }
 
   const bodyContent = !isCreating ? (
-    <Form>
-      <div className="px-5 py-5 overflow-hidden bg-white rounded-lg border border-gray-300 shadow-sm focus-within:border-rose-50 focus-within:ring-1 focus-within:ring-rose-50">
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <div className=" flex flex-col gap-2 px-5 py-5 overflow-hidden bg-secondaryBg dark:bg-secondaryBgDark rounded-lg border border-gray-300 shadow-sm focus-within:border-rose-50 focus-within:ring-1 focus-within:ring-rose-50">
         <Input
           id="url"
           name="url"
@@ -92,7 +94,7 @@ function AddBookmarkModal() {
 
         <TextArea
           {...register("description")}
-          className="block w-full rounded-md resize-none px-3 border-0 py-3 mb-6 text-gray-900 placeholder:text-gray-400 ring-inset focus:outline-none focus:ring-2 focus:ring-inset focus:ring-rose-200 sm:text-sm sm:leading-6"
+          className="block w-full rounded-md text-sm resize-none px-3 border-0 py-3 mb-6 text-textPrimary900 placeholder:text-textPrimary400 ring-inset focus:outline-none focus:ring-2 focus:ring-inset focus:ring-lightOutline dark:focus:ring-darkOutline dark:bg-secondaryBgDark dark:text-white sm:leading-6"
           name="description"
           placeholder="Optional bookmark description..."
           defaultValue={""}
@@ -109,7 +111,12 @@ function AddBookmarkModal() {
   return (
     <Modal
       onSubmit={handleSubmit(onSubmit)}
-      icon={<GiBookmark className="text-rose-600" size={24} />}
+      icon={
+        <GiBookmark
+          className="text-primary600 dark:text-primaryDark600"
+          size={24}
+        />
+      }
       disabled={isFetching || isCreating}
       body={bodyContent}
       isOpen={addBookmarkModal.isOpen}
@@ -117,6 +124,6 @@ function AddBookmarkModal() {
       title="Create a new bookmark"
     />
   );
-}
+});
 
 export default AddBookmarkModal;

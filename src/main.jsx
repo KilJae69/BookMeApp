@@ -6,6 +6,10 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <div className="max-w-[2000px] mx-auto border">
+   
       <App />
+    
+    </div>
   </React.StrictMode>
 );

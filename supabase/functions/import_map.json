@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "metadata-scraper": "npm:metadata-scraper@0.2.61"
+  }
+}

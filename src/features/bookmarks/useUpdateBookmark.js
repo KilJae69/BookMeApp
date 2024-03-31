@@ -9,10 +9,13 @@ export function useUpdateBookmark() {
     mutationFn: ({ bookmarkId, updatedBookmark }) =>
       updateBookmarkApi(bookmarkId, updatedBookmark),
     onSuccess: (data) => {
-      console.log("Bookmark updated", data)
+      
       toast.success("Bookmark successfully updated");
       queryClient.invalidateQueries({
         queryKey: ["bookmarks", data[0].category_id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["searchBookmarks"],
       });
     },
     onError: (err) => {

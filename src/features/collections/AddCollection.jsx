@@ -1,19 +1,22 @@
 import Button from "../../components/buttons/Button";
 import useAddCollectionModalStore from "../../store/useAddCollectionModalStore";
-import AddCollectionModal from "./AddCollectionModal";
-
 
 function AddCollection() {
     const addCollectionModal = useAddCollectionModalStore();
+
+    const handleClick = () =>{ 
+      addCollectionModal.onOpen();
+    }
+
     return (
-        <>
-      <div className="text-center">
-        <Button onClick={addCollectionModal.onOpen} variation="primary">
-          Add Collection
-        </Button>
-      </div>
-      <AddCollectionModal />
-        </>
+      <>
+        <div className="">
+          <Button onClick={handleClick} className="w-full" variation="primary">
+            Add New Collection
+          </Button>
+        </div>
+        
+      </>
     );
 }
 

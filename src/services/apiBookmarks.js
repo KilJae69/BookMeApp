@@ -1,3 +1,4 @@
+import { getToday } from "../helpers/getToday";
 import supabase from "./supabase";
 
 export async function getBookmarksByCategoryId(categoryId) {
@@ -54,30 +55,82 @@ export async function updateBookmark(bookmarkId, updatedBookmark) {
     throw new Error("Error updating bookmark");
   }
 
-  console.log("Bookmark updated", data);
+
   return data;
 }
 
-export async function searchBookmarks(searchTerm) {
+export async function searchBookmarks(searchTerm, userId) {
   const { data, error } = await supabase
     .from("bookmarks")
     .select(
       `
-        *,
-        categories:category_id (
+      *,
+      categories:category_id (
           category_name,
+          id,
           color,
           collections:collection_id (
-            collection_name
+              id,
+              collection_name
           )
-        )
+      )
     `
     )
+    .eq("user_id", userId)
     .ilike("title", `%${searchTerm}%`);
+    
 
   if (error) {
     console.error(error);
     return [];
+  }
+ 
+  return data;
+}
+
+export async function getBookmarksAfterDate(date, userId,includeAll=false) {
+  const todayEnd = getToday({ end: true }); 
+
+  let query = supabase
+    .from("bookmarks")
+    .select(
+      `
+      *,
+      categories:category_id (
+        color
+      )
+    `
+    )
+    .eq("user_id", userId)
+    .eq("is_favorite", true)
+    .order("favorited_at", { ascending: false });
+
+  if (!includeAll) {
+    query = query
+      .gte("favorited_at", date.toISOString())
+      .lte("favorited_at", todayEnd);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookmarks could not get loaded");
+  }
+
+  return data;
+}
+
+export async function updateBookmarkFavoriteStatus(bookmarkId,isFavorite){
+  const { data, error } = await supabase
+    .from("bookmarks")
+    .update({ is_favorite: isFavorite })
+    .eq("id", bookmarkId)
+
+
+  if (error) {
+    console.error(error);
+    throw new Error("Error updating bookmark");
   }
 
   return data;

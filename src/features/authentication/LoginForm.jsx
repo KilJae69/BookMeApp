@@ -1,8 +1,8 @@
 
 import Button from "../../components/buttons/Button";
-import Form from "../../ui/Form";
+import Form from "../../components/Form";
 import { useLogin } from "./useLogin";
-import SpinnerMini from "../../ui/Spinner";
+import Spinner from "../../components/Spinner";
 import Input from "../../components/inputs/Input";
 import { useForm } from "react-hook-form";
 
@@ -54,7 +54,7 @@ function LoginForm() {
       />
 
       <Button type="submit" variation="form" disabled={isLoading}>
-        {!isLoading ? "Log in" : <SpinnerMini />}
+        {!isLoading ? "Log in" : <Spinner size="small" />}
       </Button>
     </Form>
   );

@@ -1,16 +1,16 @@
 import { HiExclamationTriangle } from "react-icons/hi2";
 import Modal from "../../components/Modals/Modal";
 
-import Spinner from "../../ui/Spinner";
+import Spinner from "../../components/Spinner.jsx";
 import useDeleteBookmarkModal from "../../store/useDeleteBookmarkModalStore.js";
 import { useDeleteBookmark } from "./useDeleteBookmark.js";
+import { memo } from "react";
 
-
-
-function DeleteBookmarkModal() {
- 
-  const { bookmarkId,categoryId, onClose, isOpen } = useDeleteBookmarkModal();
-  const { isDeleting, deleteBookmark } = useDeleteBookmark(categoryId, ()=> onClose());
+const DeleteBookmarkModal = memo(function DeleteBookmarkModal() {
+  const { bookmarkId, categoryId, onClose, isOpen } = useDeleteBookmarkModal();
+  const { isDeleting, deleteBookmark } = useDeleteBookmark(categoryId, () =>
+    onClose()
+  );
 
   const handleConfirmDelete = () => {
     if (bookmarkId) {
@@ -24,11 +24,12 @@ function DeleteBookmarkModal() {
     </div>
   ) : (
     <div>
-      <div className="p-5">
-        <div className="mt-2 text-center">
+      <div className="p-5 sm:p-0">
+        <div className="mt-2 text-center sm:text-left">
           <div className="">
-            <p className="text-md text-gray-500">
-              Are you sure you want to delete this bookmark? This action cannot be undone.
+            <p className="text-md text-textPrimary500 dark:text-textPrimaryDark">
+              Are you sure you want to delete this bookmark? This action cannot
+              be undone.
             </p>
           </div>
         </div>
@@ -39,13 +40,15 @@ function DeleteBookmarkModal() {
   return (
     <Modal
       onSubmit={handleConfirmDelete}
-      icon={<HiExclamationTriangle className="text-rose-600 h-8 w-8" />}
+      icon={
+        <HiExclamationTriangle className="text-primary600 dark:text-primaryDark600 h-8 w-8" />
+      }
       body={bodyContent}
       isOpen={isOpen}
       onClose={onClose}
       title="Delete Bookmark"
     />
   );
-}
+});
 
 export default DeleteBookmarkModal;

@@ -53,6 +53,6 @@ export async function updateCategory(categoryId, updatedCategory) {
     throw new Error("Error updating category");
   }
 
-  console.log("Category updated", data);
+
   return data;
 }

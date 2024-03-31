@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
 import { FaRegEdit } from "react-icons/fa";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 
-import Modal from "../../components/Modals/Modal";
-
+import Modal from "../../components/modals/Modal";
 import { useUpdateCollection } from "./useUpdateCollection";
 import Input from "../../components/inputs/Input";
-import Form from "../../ui/Form";
-import Spinner from "../../ui/Spinner";
+import Form from "../../components/Form";
+import Spinner from "../../components/Spinner";
 import useUpdateCollectionModalStore from "../../store/useUpdateCollectionModalStore";
 
-function UpdateCollectionModal() {
+const UpdateCollectionModal = memo(function UpdateCollectionModal() {
   const {
     register,
     handleSubmit,
@@ -64,13 +63,15 @@ function UpdateCollectionModal() {
   return (
     <Modal
       onSubmit={handleSubmit(onSubmit)}
-      icon={<FaRegEdit className="text-rose-600 h-7 w-7" />}
+      icon={
+        <FaRegEdit className="text-primary600 dark:text-primaryDark600 h-7 w-7" />
+      }
       body={bodyContent}
       isOpen={updateCollectionModal.isOpen}
       onClose={updateCollectionModal.onClose}
       title="Edit Collection"
     />
   );
-}
+});
 
 export default UpdateCollectionModal;

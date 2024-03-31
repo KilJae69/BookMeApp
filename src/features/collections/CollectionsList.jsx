@@ -1,5 +1,5 @@
+import CollectionsSkeletonLoader from "../../components/skeletons/CollectionsSkeletonLoader";
 import useAuthStore from "../../store/useAuthStore";
-import Spinner from "../../ui/Spinner";
 import CollectionItem from "./CollectionItem";
 import { useCollections } from "./useCollections";
 
@@ -11,11 +11,7 @@ function CollectionsList() {
 
   return (
     <ul role="list" className="-mx-2 space-y-1">
-      {isLoading && (
-        <div className=" flex justify-center">
-          <Spinner size="large" />
-        </div>
-      )}
+      {isLoading && <CollectionsSkeletonLoader/>}
       {!isLoading &&
         collections &&
         collections.map((collection) => (
