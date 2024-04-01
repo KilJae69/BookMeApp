@@ -1,12 +1,13 @@
 
 import supabase from "./supabase";
+import { appURL } from "../_shared/appURL";
 
 export async function signup({ username, email, password }) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: "http://localhost:5173/welcome",
+      emailRedirectTo: `${appURL}/welcome`,
       data: {
         username,
         avatar: "",
@@ -33,7 +34,7 @@ export async function loginWithGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: "http://localhost:5173/welcome",
+      redirectTo: `${appURL}/welcome`,
     },
   });
 
@@ -47,7 +48,7 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: "http://localhost:5173/welcome",
+      redirectTo: `${appURL}/welcome`,
     },
   });
 

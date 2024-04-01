@@ -12,6 +12,8 @@ import AddCollectionModal from "../../features/collections/AddCollectionModal";
 import DeleteCollectionModal from "../../features/collections/DeleteCollectionModal";
 import UpdateCollectionModal from "../../features/collections/UpdateCollectionModal";
 import AppFooter from "./AppFooter";
+import DeleteBookmarkModal from "../../features/bookmarks/DeleteBookmarkModal";
+import UpdateBookmarkModal from "../../features/bookmarks/UpdateBookmarkModal";
 
 export default function AppLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -50,8 +52,10 @@ export default function AppLayout({ children }) {
           <AddCollectionModal />
           <DeleteCollectionModal />
           <UpdateCollectionModal />
+          <DeleteBookmarkModal />
+          <UpdateBookmarkModal />
         </main>
-       <AppFooter />
+        <AppFooter />
       </div>
     </>
   );

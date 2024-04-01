@@ -17,6 +17,7 @@
     "@tanstack/react-query-devtools": "^5.18.1",
     "metadata-scraper": "^0.2.61",
     "react": "^18.2.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.4.1",

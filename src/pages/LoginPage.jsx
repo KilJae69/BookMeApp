@@ -11,15 +11,18 @@ import BgShapeBottom from "../components/BgShapeBottom";
 function LoginPage() {
   return (
 
-      <div className=" overflow-hidden relative flex h-screen flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className=" overflow-hidden relative flex h-full min-h-screen flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <Header />
         <BgShapeTop
           colorFrom="from-[#e11d48] dark:from-[#4f46e5]"
           colorTo="to-[#f97316] dark:to-[#8e43e7]"
         />
 
-        <div className="flex relative flex-col items-center sm:mx-auto sm:w-full sm:max-w-md">
-          <Logo />
+        <div className="flex relative mt-20 md:mt-10 flex-col items-center sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="hidden sm:block">
+             <Logo />
+          </div>
+         
           <Heading
             level={2}
             className="mt-6 dark:text-white text-center text-2xl"

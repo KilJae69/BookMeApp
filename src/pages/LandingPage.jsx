@@ -7,7 +7,7 @@ import Button from "../components/buttons/Button";
 
 function LandingPage() {
   return (
-    <div className="relative overflow-hidden bg-bgPrimary50 dark:bg-bgDarkPrimary h-screen">
+    <div className="relative overflow-hidden bg-bgPrimary50 dark:bg-bgDarkPrimary h-full min-h-screen">
       <Header />
 
       <div className="relative isolate px-6 pt-14 lg:px-8 ">

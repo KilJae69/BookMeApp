@@ -11,8 +11,6 @@ import { useCategoriesByCollectionId } from "../features/categories/useCategorie
 import DeleteCategoryModal from "../features/categories/DeleteCategoryModal";
 import UpdateCategoryModal from "../features/categories/UpdateCategoryModal";
 import AddBookmarkModal from "../features/bookmarks/AddBookmarkModal";
-import DeleteBookmarkModal from "../features/bookmarks/DeleteBookmarkModal";
-import UpdateBookmarkModal from "../features/bookmarks/UpdateBookmarkModal";
 import SearchResults from "../features/search/SearchResults";
 import CategoriesSkeletonLoader from "../components/skeletons/CategoriesSkeletonLoader";
 
@@ -85,8 +83,7 @@ export default function Main() {
       <UpdateCategoryModal />
       <AddCategoryModal />
       <AddBookmarkModal />
-      <DeleteBookmarkModal />
-      <UpdateBookmarkModal />
+      
     </>
   );
 }

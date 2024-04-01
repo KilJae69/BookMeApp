@@ -7,7 +7,7 @@ import Header from "../components/LandingPageHeader/Header";
 
 function PageNotFound() {
   return (
-    <main className="relative grid min-h-screen overflow-hidden  place-items-center px-6 py-24 sm:py-32 lg:px-8">
+    <main className="relative grid h-full min-h-screen overflow-hidden  place-items-center px-6 py-24 sm:py-32 lg:px-8">
       <Header />
       <BgShapeTop
         colorFrom="from-[#e11d48] dark:from-[#4f46e5]"
