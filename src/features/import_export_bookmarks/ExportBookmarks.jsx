@@ -13,8 +13,7 @@ function ExportBookmarks() {
     user.id
   );
   const handleExportClick = () => {
-    // Placeholder for export functionality
-    console.log("Export button clicked");
+  
     const htmlContent = generateBookmarkHTML(collectionsForExport);
     downloadBookmarksFile(htmlContent);
   };

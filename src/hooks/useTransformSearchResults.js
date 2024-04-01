@@ -32,7 +32,7 @@ export const useTransformSearchResults = (bookmarks) => {
     collections[collectionId].categories[categoryId].bookmarks.push(bookmark);
   });
 
-  // Convert the collections object into an array of collections, each containing an array of categories
+
   return Object.values(collections).map((collection) => ({
     ...collection,
     categories: Object.values(collection.categories),
