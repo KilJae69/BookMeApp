@@ -21,11 +21,14 @@ function SignupForm() {
     signup(
       { email, username, password },
       {
-        onSettled: reset,
+        onSuccess: () => reset(),
       }
     );
   }
+
+
   return (
+    
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Input
         id="email"
@@ -86,15 +89,14 @@ function SignupForm() {
         errors={errors}
       />
 
-        <Button
-          className="flex w-full justify-center"
-          variation="form"
-          type="submit"
-          disabled={isLoading}
-        >
-          {!isLoading ? "Sign up" : <SpinnerMini />}
-        </Button>
-
+      <Button
+        className="flex w-full justify-center"
+        variation="form"
+        type="submit"
+        disabled={isLoading}
+      >
+        {!isLoading ? "Sign up" : <SpinnerMini />}
+      </Button>
     </Form>
   );
 }

@@ -106,7 +106,7 @@ function App() {
               duration: 2000,
             },
             error: {
-              duration: 3000,
+              duration: 5000,
             },
             style: {
               fontSize: "16px",

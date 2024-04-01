@@ -8,6 +8,7 @@ export function useSignup() {
     mutate: signup,
     isPending: isLoading,
     error,
+    isSuccess,
   } = useMutation({
     mutationFn: signupApi,
     mutationKey: "signupMutation",
@@ -17,18 +18,16 @@ export function useSignup() {
       );
     },
     onError: (error) => {
-     
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "An unexpected error occurred";
+     console.log(error)
+      
       if (error.status === 429) {
         toast.error("Too many requests. Please try again later.");
       } else {
-        toast.error(`Signup failed: ${errorMessage}`);
+        toast.error(`Signup failed: ${error.message}`);
+      
       }
     },
   });
 
-  return { signup, isLoading,error };
+  return { signup, isLoading,error,isSuccess };
 }

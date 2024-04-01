@@ -3,6 +3,14 @@ import supabase from "./supabase";
 import { appURL } from "../_shared/appURL";
 
 export async function signup({ username, email, password }) {
+   const { data: emailExists, error: emailCheckError } = await supabase.rpc(
+     "email_exists",
+     { email_address: email }
+   );
+
+    if (emailCheckError) throw new Error(emailCheckError.message);
+    if (emailExists) throw new Error("An account with this email already exists");
+    
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
