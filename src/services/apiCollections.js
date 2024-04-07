@@ -43,7 +43,7 @@ export async function updateCollection(collectionId, newName) {
   }
 
   
-  return data;
+  return {data, newName, collectionId};
 }
 
 export async function deleteCollection(collectionId) {
